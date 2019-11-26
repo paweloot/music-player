@@ -12,11 +12,7 @@ import com.paweloot.musicplayer.dummy.DummyContent.DummyItem
 
 import kotlinx.android.synthetic.main.list_item_song.view.*
 
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
- * specified [OnSongSelectedListener].
- * TODO: Replace the implementation with code for your data type.
- */
+
 class SongListAdapter(
     private val mValues: List<DummyItem>,
     private val mListener: OnSongSelectedListener?
@@ -56,8 +52,5 @@ class SongListAdapter(
         val mIdView: TextView = mView.item_number
         val mContentView: TextView = mView.content
 
-        override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
-        }
     }
 }
