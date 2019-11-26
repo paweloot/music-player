@@ -2,7 +2,6 @@ package com.paweloot.musicplayer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.paweloot.musicplayer.dummy.DummyContent
 
 class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListener {
 

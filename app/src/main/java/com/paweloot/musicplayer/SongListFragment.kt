@@ -9,9 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.paweloot.musicplayer.dummy.DummyContent
-import com.paweloot.musicplayer.dummy.DummyContent.DummyItem
-
 
 class SongListFragment : Fragment() {
 
