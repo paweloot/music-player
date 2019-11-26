@@ -8,49 +8,46 @@ import android.widget.TextView
 
 
 import com.paweloot.musicplayer.SongListFragment.OnSongSelectedListener
-import com.paweloot.musicplayer.dummy.DummyContent.DummyItem
-
-import kotlinx.android.synthetic.main.list_item_song.view.*
 
 
 class SongListAdapter(
-    private val mValues: List<DummyItem>,
-    private val mListener: OnSongSelectedListener?
-) : RecyclerView.Adapter<SongListAdapter.ViewHolder>() {
+    private val songs: List<Song>,
+    private val onSongSelectedListener: OnSongSelectedListener
+) : RecyclerView.Adapter<SongListAdapter.SongHolder>() {
 
-    private val mOnClickListener: View.OnClickListener
+    private val onClickListener: View.OnClickListener
 
     init {
-        mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyItem
-            // Notify the active callbacks interface (the activity, if the fragment is attached to
-            // one) that an item has been selected.
-            mListener?.onSongSelected(item)
+        onClickListener = View.OnClickListener { v ->
+            val song = v.tag as Song
+            onSongSelectedListener.onSongSelected(song)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item_song, parent, false)
-        return ViewHolder(view)
+
+        return SongHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
-        holder.mIdView.text = item.id
-        holder.mContentView.text = item.content
+    override fun onBindViewHolder(holder: SongHolder, position: Int) {
+        val song = songs[position]
 
-        with(holder.mView) {
-            tag = item
-            setOnClickListener(mOnClickListener)
+        holder.titleTextView.text = song.title
+        holder.artistTextView.text = song.artist
+
+        with(holder.view) {
+            tag = song
+            setOnClickListener(onClickListener)
         }
     }
 
-    override fun getItemCount(): Int = mValues.size
+    override fun getItemCount(): Int = songs.size
 
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.item_number
-        val mContentView: TextView = mView.content
+    inner class SongHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        val titleTextView: TextView = view.findViewById(R.id.title)
+        val artistTextView: TextView = view.findViewById(R.id.artist)
 
     }
 }

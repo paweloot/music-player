@@ -26,7 +26,12 @@ class SongListFragment : Fragment() {
 
         with(view as RecyclerView) {
             layoutManager = LinearLayoutManager(context)
-            adapter = SongListAdapter(DummyContent.ITEMS, onSongSelectedListener)
+
+            val songs = listOf(
+                Song("Afraid To Shoot Strangers", "Iron Maiden"),
+                Song("Air", "Jason Becker")
+            )
+            adapter = SongListAdapter(songs, onSongSelectedListener)
         }
 
         return view
@@ -42,7 +47,7 @@ class SongListFragment : Fragment() {
     }
 
     interface OnSongSelectedListener {
-        fun onSongSelected(item: DummyItem?)
+        fun onSongSelected(song: Song)
     }
 
     companion object {

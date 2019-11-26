@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
             .commit()
     }
 
-    override fun onSongSelected(item: DummyContent.DummyItem?) {
+    override fun onSongSelected(song: Song) {
         // TODO
     }
 }
