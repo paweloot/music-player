@@ -94,7 +94,9 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
 
     override fun onStart() {
         super.onStart()
-        mediaBrowser.connect()
+        if (!mediaBrowser.isConnected) {
+            mediaBrowser.connect()
+        }
     }
 
     override fun onResume() {
@@ -105,7 +107,13 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
     override fun onStop() {
         super.onStop()
         MediaControllerCompat.getMediaController(this)?.unregisterCallback(controllerCallback)
-        mediaBrowser.disconnect()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mediaBrowser.isConnected) {
+            mediaBrowser.disconnect()
+        }
     }
 
     override fun onSongSelected(song: Song) {
