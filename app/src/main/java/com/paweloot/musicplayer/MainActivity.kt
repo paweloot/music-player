@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
                         this@MainActivity,
                         token
                     )
-                    
+
                     MediaControllerCompat.setMediaController(
                         this@MainActivity,
                         mediaController
@@ -77,9 +77,11 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
         songDataManager = SongDataManager.get()
 
         val songFragment = SongListFragment.newInstance(songDataManager)
+        val currentSongFragment = CurrentSongFragment.newInstance()
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.activity_main_fragment_container, songFragment)
+            .add(R.id.activity_main_song_list_container, songFragment)
+            .add(R.id.activity_main_current_song_container, currentSongFragment)
             .commit()
 
         mediaBrowser = MediaBrowserCompat(

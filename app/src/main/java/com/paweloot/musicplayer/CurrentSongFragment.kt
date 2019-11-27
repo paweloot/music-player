@@ -16,4 +16,7 @@ class CurrentSongFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_current_song, container, false)
     }
 
+    companion object {
+        fun newInstance() = CurrentSongFragment()
+    }
 }
