@@ -12,6 +12,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
 
 private const val PERMISSION_READ_EXTERNAL_STORAGE = 0
 
@@ -54,9 +55,14 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
     private lateinit var songDataManager: SongDataManager
     private lateinit var mediaBrowser: MediaBrowserCompat
 
+    private lateinit var mainActivityViewModel: MainActivityViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mainActivityViewModel = ViewModelProviders.of(this)
+            .get(MainActivityViewModel::class.java)
 
         requestReadExternalStoragePermission()
 
