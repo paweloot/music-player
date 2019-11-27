@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".SongBrowserService"
+            android:name=".SongPlaybackService"
             android:exported="false"
             android:label="@string/song_browser_service_name">
             <intent-filter>

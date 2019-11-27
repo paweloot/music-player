@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Music Player</string>
-    <string name="song_browser_service_name">Song Browser</string>
+    <string name="song_browser_service_name">Song Playback Service</string>
 </resources>
