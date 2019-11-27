@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Music Player</string>
     <string name="song_browser_service_name">Song Playback Service</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="current_song_album_artwork">Current song album artwork</string>
 </resources>

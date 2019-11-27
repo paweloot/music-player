@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="fragment_current_song_height">80dp</dimen>
+    <dimen name="fragment_current_song_album_size">70dp</dimen>
 </resources>
