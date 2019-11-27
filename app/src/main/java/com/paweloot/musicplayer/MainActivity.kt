@@ -9,9 +9,11 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
 private const val PERMISSION_READ_EXTERNAL_STORAGE = 0
@@ -23,14 +25,12 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
             override fun onConnected() {
                 super.onConnected()
 
-                // Get the token for the MediaSession
                 mediaBrowser.sessionToken.also { token ->
                     val mediaController = MediaControllerCompat(
                         this@MainActivity,
                         token
                     )
-
-                    // Save the controller
+                    
                     MediaControllerCompat.setMediaController(
                         this@MainActivity,
                         mediaController
@@ -63,6 +63,13 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
 
         mainActivityViewModel = ViewModelProviders.of(this)
             .get(MainActivityViewModel::class.java)
+
+        mainActivityViewModel.currentSong.observe(
+            this,
+            Observer<Song> { song ->
+                Log.d("MainActivity", "Changed song to ${song.title}")
+            }
+        )
 
         requestReadExternalStoragePermission()
 
@@ -100,7 +107,7 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
     }
 
     override fun onSongSelected(song: Song) {
-        // TODO
+        mainActivityViewModel.currentSong.value = song
     }
 
     private fun buildTransportControls() {
