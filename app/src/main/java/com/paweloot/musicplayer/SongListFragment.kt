@@ -2,15 +2,14 @@ package com.paweloot.musicplayer
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-
-class SongListFragment : Fragment() {
+class SongListFragment(private val songDataManager: SongDataManager) : Fragment() {
 
     private lateinit var onSongSelectedListener: OnSongSelectedListener
 
@@ -24,10 +23,7 @@ class SongListFragment : Fragment() {
         with(view as RecyclerView) {
             layoutManager = LinearLayoutManager(context)
 
-            val songs = listOf(
-                Song("Afraid To Shoot Strangers", "Iron Maiden"),
-                Song("Air", "Jason Becker")
-            )
+            val songs: List<Song> = songDataManager.songData
             adapter = SongListAdapter(songs, onSongSelectedListener)
         }
 
@@ -48,6 +44,7 @@ class SongListFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = SongListFragment()
+        fun newInstance(songDataManager: SongDataManager) =
+            SongListFragment(songDataManager)
     }
 }

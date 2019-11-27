@@ -11,13 +11,18 @@ private const val PERMISSION_READ_EXTERNAL_STORAGE = 0
 
 class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListener {
 
+    private lateinit var songDataManager: SongDataManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         requestReadExternalStoragePermission()
 
-        val songFragment = SongListFragment.newInstance()
+        SongDataManager.initialize(this)
+        songDataManager = SongDataManager.get()
+
+        val songFragment = SongListFragment.newInstance(songDataManager)
 
         supportFragmentManager.beginTransaction()
             .add(R.id.activity_main_fragment_container, songFragment)
