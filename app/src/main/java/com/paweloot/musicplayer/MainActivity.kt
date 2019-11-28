@@ -74,6 +74,8 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         requestReadExternalStoragePermission()
 
