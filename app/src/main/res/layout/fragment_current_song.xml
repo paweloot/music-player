@@ -13,6 +13,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/drawable_album_artwork_rounded"
         android:contentDescription="@string/current_song_album_artwork"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,24 +23,35 @@
 
     <TextView
         android:id="@+id/song_title"
-        android:layout_width="wrap_content"
+        style="@android:style/TextAppearance.Material.Subhead"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_current_song_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/play_pause_button"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/album_artwork"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         tools:text="Scuttle Buttin'" />
 
     <TextView
         android:id="@+id/song_artist"
-        android:layout_width="wrap_content"
+        style="@android:style/TextAppearance.Material.Caption"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/play_pause_button"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/album_artwork"
-        app:layout_constraintTop_toBottomOf="@+id/song_title"
+        app:layout_constraintTop_toTopOf="@+id/fragment_current_song_guideline"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="Stevie Ray Vaughan" />
 
     <Button
@@ -54,5 +66,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:background="@drawable/ic_round_play_circle_filled_24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/fragment_current_song_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

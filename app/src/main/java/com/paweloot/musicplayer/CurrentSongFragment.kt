@@ -31,6 +31,7 @@ class CurrentSongFragment : Fragment() {
         artistTextView = view.findViewById(R.id.song_artist)
         playPauseButton = view.findViewById(R.id.play_pause_button)
 
+        albumArtwork.clipToOutline = true
         playPauseButton.background =
             requireContext().getDrawable(R.drawable.ic_round_play_circle_filled_24)
 
