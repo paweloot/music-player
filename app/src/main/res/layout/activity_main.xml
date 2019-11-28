@@ -39,6 +39,8 @@
         android:id="@+id/activity_main_current_song_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_current_song_height"
+        android:elevation="4dp"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
