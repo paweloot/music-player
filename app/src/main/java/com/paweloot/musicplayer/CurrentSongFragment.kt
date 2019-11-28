@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 
 
 class CurrentSongFragment : Fragment() {
@@ -38,27 +37,20 @@ class CurrentSongFragment : Fragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        SongDataManager.get().currentSong.observe(
-            viewLifecycleOwner,
-            Observer { song ->
-                if (song.albumArtwork == null) {
-                    albumArtwork.setImageDrawable(
-                        context?.getDrawable(R.drawable.ic_baseline_album_70)
-                    )
-                } else {
-                    albumArtwork.setImageBitmap(BitmapFactory.decodeFile(song.albumArtwork))
-                }
-                titleTextView.text = song.title
-                artistTextView.text = song.artist
-            }
-        )
-    }
-
     fun setOnPlayPauseButtonListener(onClickListener: View.OnClickListener) {
         playPauseButton.setOnClickListener(onClickListener)
+    }
+
+    fun setCurrentSong(song: Song) {
+        if (song.albumArtwork == null) {
+            albumArtwork.setImageDrawable(
+                context?.getDrawable(R.drawable.ic_baseline_album_70)
+            )
+        } else {
+            albumArtwork.setImageBitmap(BitmapFactory.decodeFile(song.albumArtwork))
+        }
+        titleTextView.text = song.title
+        artistTextView.text = song.artist
     }
 
     fun setCurrentState(state: Int) {

@@ -14,6 +14,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 
 private const val PERMISSION_READ_EXTERNAL_STORAGE = 0
 private const val TAG = "LifecyclePaweloot"
@@ -92,6 +93,13 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
             ComponentName(this, SongPlaybackService::class.java),
             connectionCallback,
             null
+        )
+
+        songDataManager.currentSong.observe(
+            this,
+            Observer { song ->
+                currentSongFragment.setCurrentSong(song)
+            }
         )
     }
 
