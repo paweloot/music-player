@@ -14,6 +14,8 @@ class SongDataManager private constructor(private val context: Context) {
     }
 
     private fun querySongData() {
+        val albumArtworks = loadAlbumArtworks()
+
         val projection = arrayOf(
             MediaStore.Audio.Media.DATA,
             MediaStore.Audio.Media.TITLE,
@@ -38,12 +40,48 @@ class SongDataManager private constructor(private val context: Context) {
                     val artist = cursor.getString(3)
                     val albumId = cursor.getString(4)
 
-                    songData.add(Song(data, title, artist, album, albumId))
+                    songData.add(
+                        Song(
+                            data, title, artist, album,
+                            albumArtworks[albumId.toInt()]
+                        )
+                    )
                 }
             }
 
             cursor?.close()
         }
+    }
+
+    private fun loadAlbumArtworks(): HashMap<Int, String?> {
+        val artworks = HashMap<Int, String?>()
+
+        val projection = arrayOf(
+            MediaStore.Audio.Albums._ID,
+            MediaStore.Audio.Albums.ALBUM_ART
+        )
+
+        with(context as MainActivity) {
+            val cursor = contentResolver.query(
+                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                projection,
+                null,
+                null,
+                null
+            )
+
+            if (cursor != null && cursor.count > 0) {
+                while (cursor.moveToNext()) {
+                    val albumId = cursor.getString(0)
+                    val albumArt = cursor.getString(1)
+
+                    artworks[albumId.toInt()] = albumArt
+                }
+            }
+            cursor?.close()
+        }
+
+        return artworks
     }
 
     companion object {
