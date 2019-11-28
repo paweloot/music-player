@@ -10,6 +10,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -56,6 +57,8 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
     private lateinit var mediaBrowser: MediaBrowserCompat
 
     private lateinit var mainActivityViewModel: MainActivityViewModel
+    private lateinit var songFragment: SongListFragment
+    private lateinit var currentSongFragment: CurrentSongFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,8 +79,8 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
         SongDataManager.initialize(this)
         songDataManager = SongDataManager.get()
 
-        val songFragment = SongListFragment.newInstance(songDataManager)
-        val currentSongFragment = CurrentSongFragment.newInstance()
+        songFragment = SongListFragment.newInstance(songDataManager)
+        currentSongFragment = CurrentSongFragment.newInstance()
 
         supportFragmentManager.beginTransaction()
             .add(R.id.activity_main_song_list_container, songFragment)
@@ -124,19 +127,16 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
         val mediaController =
             MediaControllerCompat.getMediaController(this@MainActivity)
 
-//        playPause = findViewById<ImageView>(R.id.play_pause).apply {
-//            setOnClickListener {
-//                // Since this is a play/pause button, you'll need to test the current state
-//                // and choose the action accordingly
-//
-//                val pbState = mediaController.playbackState.state
-//                if (pbState == PlaybackStateCompat.STATE_PLAYING) {
-//                    mediaController.transportControls.pause()
-//                } else {
-//                    mediaController.transportControls.play()
-//                }
-//            }
-//        }
+        currentSongFragment.setOnPlayPauseButtonListener(View.OnClickListener {
+            val state = mediaController.playbackState.state
+            if (state == PlaybackStateCompat.STATE_PLAYING) {
+                mediaController.transportControls.pause()
+                Log.d("MainActivity", "PAUSING")
+            } else {
+                mediaController.transportControls.play()
+                Log.d("MainActivity", "PLAYING")
+            }
+        })
 
         val metadata = mediaController.metadata
         val pbState = mediaController.playbackState

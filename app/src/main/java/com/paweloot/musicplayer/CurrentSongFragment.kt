@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,6 +17,7 @@ class CurrentSongFragment : Fragment() {
 
     private lateinit var titleTextView: TextView
     private lateinit var artistTextView: TextView
+    private lateinit var playPauseButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,7 @@ class CurrentSongFragment : Fragment() {
 
         titleTextView = view.findViewById(R.id.song_title)
         artistTextView = view.findViewById(R.id.song_artist)
+        playPauseButton = view.findViewById(R.id.play_pause_button)
 
         return view
     }
@@ -47,6 +50,10 @@ class CurrentSongFragment : Fragment() {
                 artistTextView.text = song.artist
             }
         )
+    }
+
+    fun setOnPlayPauseButtonListener(onClickListener: View.OnClickListener) {
+        playPauseButton.setOnClickListener(onClickListener)
     }
 
     companion object {

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.media.MediaBrowserServiceCompat
 
@@ -28,8 +29,15 @@ class SongPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedL
             )
             setDataSource(applicationContext, Uri.parse(song.dataPath))
         }
-
         player.prepareAsync()
+
+        setSessionPlaybackState(
+            PlaybackStateCompat.STATE_PLAYING,
+            player.currentPosition.toLong()
+        )
+
+        Log.d(TAG, "Changing song in Observer")
+        Log.d(TAG, "Current player position: ${player.currentPosition}")
     }
 
     override fun onPrepared(mediaPlayer: MediaPlayer?) {
@@ -40,16 +48,33 @@ class SongPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedL
         override fun onPlay() {
             super.onPlay()
             player.start()
+            setSessionPlaybackState(
+                PlaybackStateCompat.STATE_PLAYING,
+                player.currentPosition.toLong()
+            )
+            Log.d(TAG, "onPlay from MediaSession")
+            Log.d(TAG, "onPlay position: ${player.currentPosition}")
         }
 
         override fun onPause() {
             super.onPause()
             player.pause()
+            setSessionPlaybackState(
+                PlaybackStateCompat.STATE_PAUSED,
+                player.currentPosition.toLong()
+            )
+            Log.d(TAG, "onPause from MediaSession")
+            Log.d(TAG, "onPause position: ${player.currentPosition}")
         }
 
         override fun onStop() {
             super.onStop()
             player.stop()
+            setSessionPlaybackState(
+                PlaybackStateCompat.STATE_STOPPED,
+                player.currentPosition.toLong()
+            )
+            Log.d(TAG, "onStop from MediaSession")
         }
     }
 
@@ -71,7 +96,8 @@ class SongPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedL
             playbackStateBuilder = PlaybackStateCompat.Builder()
                 .setActions(
                     PlaybackStateCompat.ACTION_PLAY or
-                            PlaybackStateCompat.ACTION_PLAY_PAUSE
+                            PlaybackStateCompat.ACTION_PLAY_PAUSE or
+                            PlaybackStateCompat.ACTION_PAUSE
                 )
 
             setPlaybackState(playbackStateBuilder.build())
@@ -115,5 +141,18 @@ class SongPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedL
         mediaSession?.isActive = false
 
         songDataManager.currentSong.removeObserver(currentSongObserver)
+    }
+
+    private fun setSessionPlaybackState(state: Int, position: Long) {
+        mediaSession?.setPlaybackState(
+            playbackStateBuilder
+                .setActions(
+                    PlaybackStateCompat.ACTION_PLAY or
+                            PlaybackStateCompat.ACTION_PLAY_PAUSE or
+                            PlaybackStateCompat.ACTION_PAUSE
+                )
+                .setState(state, position, 1.0f)
+                .build()
+        )
     }
 }
