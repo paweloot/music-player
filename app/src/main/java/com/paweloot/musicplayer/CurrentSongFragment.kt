@@ -8,23 +8,13 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 
 
 class CurrentSongFragment : Fragment() {
 
-    private lateinit var mainActivityViewModel: MainActivityViewModel
-
     private lateinit var titleTextView: TextView
     private lateinit var artistTextView: TextView
     private lateinit var playPauseButton: ImageButton
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        mainActivityViewModel = ViewModelProviders.of(requireActivity())
-            .get(MainActivityViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +33,7 @@ class CurrentSongFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainActivityViewModel.currentSong.observe(
+        SongDataManager.get().currentSong.observe(
             viewLifecycleOwner,
             Observer { song ->
                 titleTextView.text = song.title

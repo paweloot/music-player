@@ -14,8 +14,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 
 private const val PERMISSION_READ_EXTERNAL_STORAGE = 0
 
@@ -56,23 +54,12 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
     private lateinit var songDataManager: SongDataManager
     private lateinit var mediaBrowser: MediaBrowserCompat
 
-    private lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var songFragment: SongListFragment
     private lateinit var currentSongFragment: CurrentSongFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        mainActivityViewModel = ViewModelProviders.of(this)
-            .get(MainActivityViewModel::class.java)
-
-        mainActivityViewModel.currentSong.observe(
-            this,
-            Observer<Song> { song ->
-                Log.d("MainActivity", "Changed song to ${song.title}")
-            }
-        )
 
         requestReadExternalStoragePermission()
 
@@ -120,7 +107,7 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
     }
 
     override fun onSongSelected(song: Song) {
-        mainActivityViewModel.currentSong.value = song
+        SongDataManager.get().currentSong.postValue(song)
     }
 
     private fun buildTransportControls() {

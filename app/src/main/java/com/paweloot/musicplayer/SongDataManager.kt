@@ -3,7 +3,6 @@ package com.paweloot.musicplayer
 import android.content.Context
 import android.provider.MediaStore
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProviders
 
 class SongDataManager private constructor(private val context: Context) {
 
@@ -12,12 +11,6 @@ class SongDataManager private constructor(private val context: Context) {
 
     init {
         querySongData()
-
-        val viewModel = ViewModelProviders.of(context as MainActivity)
-            .get(MainActivityViewModel::class.java)
-        viewModel.currentSong.observeForever { song ->
-            currentSong.postValue(song)
-        }
     }
 
     private fun querySongData() {
