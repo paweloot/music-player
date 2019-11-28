@@ -42,16 +42,17 @@
         app:layout_constraintTop_toBottomOf="@+id/song_title"
         tools:text="Stevie Ray Vaughan" />
 
-    <ImageButton
+    <Button
         android:id="@+id/play_pause_button"
         android:layout_width="@dimen/current_song_button_size"
         android:layout_height="@dimen/current_song_button_size"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/ic_round_play_circle_filled_24"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@drawable/ic_round_play_circle_filled_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

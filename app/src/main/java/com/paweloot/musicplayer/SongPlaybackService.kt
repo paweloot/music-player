@@ -13,7 +13,7 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.media.MediaBrowserServiceCompat
 
-private const val TAG = "SongPlaybackService"
+private const val TAG = "LifecyclePaweloot"
 private const val MEDIA_ROOT_ID = "media_root_id"
 
 class SongPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener {
@@ -22,62 +22,60 @@ class SongPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedL
         player.stop()
         player.reset()
 
-        player.apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build()
-            )
-            setDataSource(applicationContext, Uri.parse(song.dataPath))
-        }
+        setSessionMetadata(song)
+        player.setDataSource(applicationContext, Uri.parse(song.dataPath))
         player.prepareAsync()
 
+        Log.d(TAG, "SongPlaybackService: onCurrentSongChanged")
+    }
+
+    override fun onPrepared(mediaPlayer: MediaPlayer?) {
         setSessionPlaybackState(
             PlaybackStateCompat.STATE_PLAYING,
             player.currentPosition.toLong()
         )
-        setSessionMetadata(song)
-
-        Log.d(TAG, "Changing song in Observer")
-        Log.d(TAG, "Current player position: ${player.currentPosition}")
-    }
-
-    override fun onPrepared(mediaPlayer: MediaPlayer?) {
         player.start()
     }
 
     private val callback = object : MediaSessionCompat.Callback() {
         override fun onPlay() {
             super.onPlay()
-            player.start()
+
+            mediaSession?.isActive = true
             setSessionPlaybackState(
                 PlaybackStateCompat.STATE_PLAYING,
                 player.currentPosition.toLong()
             )
-            Log.d(TAG, "onPlay from MediaSession")
-            Log.d(TAG, "onPlay position: ${player.currentPosition}")
+            player.start()
+
+            Log.d(TAG, "SongPlaybackService: onPlay from MediaSession")
         }
 
         override fun onPause() {
             super.onPause()
-            player.pause()
+
             setSessionPlaybackState(
                 PlaybackStateCompat.STATE_PAUSED,
                 player.currentPosition.toLong()
             )
-            Log.d(TAG, "onPause from MediaSession")
-            Log.d(TAG, "onPause position: ${player.currentPosition}")
+
+            player.pause()
+
+            Log.d(TAG, "SongPlaybackService: onPause from MediaSession")
         }
 
         override fun onStop() {
             super.onStop()
-            player.stop()
+
+            mediaSession?.isActive = false
             setSessionPlaybackState(
                 PlaybackStateCompat.STATE_STOPPED,
                 player.currentPosition.toLong()
             )
-            Log.d(TAG, "onStop from MediaSession")
+
+            player.stop()
+
+            Log.d(TAG, "SongPlaybackService: onStop from MediaSession")
         }
     }
 
@@ -109,8 +107,15 @@ class SongPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedL
             isActive = true
         }
 
-        songDataManager.currentSong.observeForever(currentSongObserver)
+        player.setAudioAttributes(
+            AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build()
+        )
         player.setOnPreparedListener(this)
+
+        songDataManager.currentSong.observeForever(currentSongObserver)
     }
 
     override fun onLoadChildren(

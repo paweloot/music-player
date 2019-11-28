@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 private const val PERMISSION_READ_EXTERNAL_STORAGE = 0
+private const val TAG = "LifecyclePaweloot"
 
 class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListener {
 
@@ -37,13 +38,25 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
                 }
 
                 buildTransportControls()
+                Log.d(TAG, "MainActivity: onConnected to media browser")
             }
         }
 
     private val controllerCallback =
         object : MediaControllerCompat.Callback() {
-            override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
+            override fun onPlaybackStateChanged(state: PlaybackStateCompat) {
                 super.onPlaybackStateChanged(state)
+
+                when (state.state) {
+                    PlaybackStateCompat.STATE_PLAYING -> {
+                        currentSongFragment.setCurrentState(PlaybackStateCompat.STATE_PLAYING)
+                    }
+                    PlaybackStateCompat.STATE_PAUSED -> {
+                        currentSongFragment.setCurrentState(PlaybackStateCompat.STATE_PAUSED)
+                    }
+                }
+
+                Log.d(TAG, "MainActivity: onPlayBackStateChanged")
             }
 
             override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
@@ -115,13 +128,11 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
             MediaControllerCompat.getMediaController(this@MainActivity)
 
         currentSongFragment.setOnPlayPauseButtonListener(View.OnClickListener {
-            val state = mediaController.playbackState.state
-            if (state == PlaybackStateCompat.STATE_PLAYING) {
-                mediaController.transportControls.pause()
-                Log.d("MainActivity", "PAUSING")
-            } else {
-                mediaController.transportControls.play()
-                Log.d("MainActivity", "PLAYING")
+            when (mediaController.playbackState.state) {
+                PlaybackStateCompat.STATE_PLAYING ->
+                    mediaController.transportControls.pause()
+                PlaybackStateCompat.STATE_PAUSED ->
+                    mediaController.transportControls.play()
             }
         })
 

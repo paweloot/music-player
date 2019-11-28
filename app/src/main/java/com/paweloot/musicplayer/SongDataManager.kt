@@ -11,7 +11,6 @@ class SongDataManager private constructor(private val context: Context) {
 
     init {
         querySongData()
-        currentSong.postValue(songData[0])
     }
 
     private fun querySongData() {
