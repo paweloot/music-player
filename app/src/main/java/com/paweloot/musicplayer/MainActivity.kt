@@ -97,9 +97,13 @@ class MainActivity : AppCompatActivity(), SongListFragment.OnSongSelectedListene
 
     override fun onStart() {
         super.onStart()
+
         if (!mediaBrowser.isConnected) {
             mediaBrowser.connect()
         }
+
+        MediaControllerCompat.getMediaController(this)
+            ?.registerCallback(controllerCallback)
     }
 
     override fun onResume() {
