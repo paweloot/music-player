@@ -1,10 +1,12 @@
 package com.paweloot.musicplayer
 
 import android.media.AudioAttributes
+import android.media.MediaMetadata
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
@@ -35,6 +37,7 @@ class SongPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedL
             PlaybackStateCompat.STATE_PLAYING,
             player.currentPosition.toLong()
         )
+        setSessionMetadata(song)
 
         Log.d(TAG, "Changing song in Observer")
         Log.d(TAG, "Current player position: ${player.currentPosition}")
@@ -152,6 +155,16 @@ class SongPlaybackService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedL
                             PlaybackStateCompat.ACTION_PAUSE
                 )
                 .setState(state, position, 1.0f)
+                .build()
+        )
+    }
+
+    private fun setSessionMetadata(song: Song) {
+        mediaSession?.setMetadata(
+            MediaMetadataCompat.Builder()
+                .putString(MediaMetadata.METADATA_KEY_TITLE, song.title)
+                .putString(MediaMetadata.METADATA_KEY_ARTIST, song.artist)
+                .putString(MediaMetadata.METADATA_KEY_ALBUM, song.album)
                 .build()
         )
     }
