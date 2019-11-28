@@ -8,15 +8,15 @@
 
     <TextView
         android:id="@+id/title"
+        style="@android:style/TextAppearance.Material.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceListItem"
         tools:text="Scuttle Buttin'" />
 
     <TextView
         android:id="@+id/artist"
+        style="@android:style/TextAppearance.Material.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceListItemSecondary"
         tools:text="Stevie Ray Vaughan" />
 </LinearLayout>
